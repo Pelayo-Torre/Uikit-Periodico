@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Periodico</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/uikit.css"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/uikit.js"></script>
+    <script src="/js/uikit-icons.js"></script>
+</head>
+<body>
+
+
+<!-- NOTIFICACION -->
+<!-- Esto solo sirve si se pasa desde la view -->
+{{#if mensaje}}
+<script>
+    UIkit.notification({message: '{{ mensaje }}', status: 'success'})
+</script>
+{{/if}}
+<!-- Hacer que el mensaje obtenido como parámetro GET tenga una funcionalidad “equivalente” al parámetro mensaje enviado desde los controladores -->
+<script>
+    var mensaje = getUrlParameter('mensaje');
+    var tipoMensaje = getUrlParameter('tipoMensaje');
+
+    if ( mensaje != ""){
+        if (tipoMensaje == "" ){
+            tipoMensaje = 'primary'; <!-- Para que salga de color azul, los hay de tipo Danger, Warning...-->
+        }
+        UIkit.notification({message: mensaje, status: tipoMensaje})
+    }
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' :
+            decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+</script>
+
+
+<!--HEADER-->
+<header class="uk-box-shadow-small"  style="background: white">
+    <div class="uk-container uk-container-expand">
+        <nav class="uk-navbar" data-uk-navbar>
+            <div class="uk-navbar-left">
+                <img width=30" height="30" src="images/uikit.svg" alt="">
+                <a class="uk-navbar-item uk-logo" href="/noticias">Periodico</a>
+            </div>
+
+            <div class="uk-navbar-right">
+                <!-- uk-visible@m Lo visualiza en pantallas más pequeñas de m-->
+                {{#if usuarioAutenticado}}
+                <ul class="uk-navbar-nav uk-visible@m">
+                    <li>
+                        <a href="/noticiasCompartidas">
+                            <span class="uk-badge uk-margin-small-right">{{numNoticiasCompartidas}}</span>
+                            <span data-uk-icon="heart"
+                                  class="uk-margin-small-right">
+                            </span> Noticias compartidas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/misnoticias">
+                            <span class="uk-badge uk-margin-small-right">{{numMisNoticias}}</span>
+                            <span data-uk-icon="list"
+                                  class="uk-margin-small-right">
+                            </span> Mis noticias
+                        </a>
+                    </li>
+                    <div class="uk-navbar-item">
+                        <a href="/publicar"
+                           class="uk-button uk-button-primary uk-visible@m">
+                            <span data-uk-icon="plus-circle"
+                                  class="uk-margin-small-right">
+                            </span>Publicar noticia
+                        </a>
+                    </div>
+                </ul>
+                {{/if}}
+
+                <!-- Si llega la variable usuarioAutenticado muestra un cuadro con su nombre, sino muestra el boton de login-->
+                {{#if usuarioAutenticado}}
+                <div class="uk-inline uk-visible@m">
+                    <button class="uk-button uk-button-default" type="button">{{usuarioAutenticado}}</button>
+                    <div uk-dropdown>
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li>
+                                <a href="/misdatos">
+                                     <span data-uk-icon="user"
+                                           class="uk-margin-small-right">
+                                    </span>
+                                    Mi perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/desconectarse">
+                                    <span data-uk-icon="sign-out"
+                                          class="uk-margin-small-right">
+                                    </span>
+                                    Desconectarse
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {{/if}}
+                {{^usuarioAutenticado}}
+                <div class="uk-navbar-item uk-visible@m">
+                    <a href="/login"
+                       class="uk-button uk-button-default uk-visible@m">
+                        <span data-uk-icon="sign-in"
+                              class="uk-margin-small-right">
+                        </span>Acceder
+                    </a>
+                </div>
+                {{/usuarioAutenticado}}
+
+                <!-- Menú de movil lo oculta en pantallas mayores de m-->
+                <div class="uk-navbar-item uk-hidden@m">
+                    <a class="uk-navbar-toggle"
+                       data-uk-toggle data-uk-navbar-toggle-icon
+                       href="#offcanvas-nav">
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- Menú para movil - offCanvas -->
+<div id="offcanvas-nav"
+     data-uk-offcanvas="flip: true; overlay: true">
+    <li class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
+        <button
+                class="uk-offcanvas-close uk-close uk-icon"
+                type="button"
+                data-uk-close>
+        </button>
+        <ul class="uk-nav uk-nav-default">
+            <li class="uk-nav-header">Inicio</li>
+            {{#if usuarioAutenticado}}
+            <li>
+                <a href="/publicar">
+                            <span data-uk-icon="plus-circle"
+                                  class="uk-margin-small-right">
+                            </span>Publicar noticia
+                </a>
+            </li>
+            <li>
+                <a href="/misnoticias">
+                            <span data-uk-icon="list"
+                                  class="uk-margin-small-right">
+                            </span> Mis noticias
+                </a>
+            </li>
+            <li>
+                <a href="/noticiasCompartidas">
+                            <span data-uk-icon="heart"
+                                  class="uk-margin-small-right">
+                            </span> Noticias compartidas
+                </a>
+            </li>
+            <li>
+                <a href="/misdatos">
+                     <span data-uk-icon="user"
+                           class="uk-margin-small-right">
+                    </span>
+                    Mi perfil
+                </a>
+            </li>
+            <li>
+                <a href="/desconectarse">
+                    <span data-uk-icon="sign-out"
+                          class="uk-margin-small-right">
+                    </span>
+                    Desconectarse
+                </a>
+            </li>
+            {{/if}}
+            {{^usuarioAutenticado}}
+            <li>
+                <a href="/login">
+                    <span class="uk-margin-small-right uk-icon"
+                          data-uk-icon="icon: sign-in">
+                    </span>Acceder
+                </a>
+            </li>
+            {{/usuarioAutenticado}}
+            <li class="uk-nav-header">Secciones</li>
+            <li class="uk-parent"><a href="/noticias" name="categoria">Portada</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=politica" name="categoria"><img style="height:20px; padding-right: 5px;" src="/images/politica.png">Politica</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=economia" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/euro.png">Economía</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=sociedad" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/society.png">Sociedad</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=cultura" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/atom.png">Cultura y ciencia</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=deportes" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/football.png">Deportes</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=television" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/television.png">Televisión</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=gente" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/heart.png">Gente</a></li>
+            <li class="uk-parent"><a href="/noticias?categoria=opinion" name="categoria"><img style="height:20px; padding-right: 5px" src="/images/opinion.png">Opinión</a></li>
+        </ul>
+    </div>
+</div>
+
+<!--CONTENT-->
+{{{content}}}
+
+
+<!--FOOTER-->
+<footer class="uk-section-secondary">
+    <div class="uk-container uk-section">
+        <div class="uk-grid uk-child-width-1-3@m">
+            <div>
+                <h4 class="uk-margin-top">{{ usuarioAutenticado }}</h4>
+                <ul class="uk-list uk-list-bullet">
+                    <li><a href="#">¿Quiénes somos?</a></li>
+                    <li><a href="#">Empleo</a></li>
+                    <li><a href="#">Equipo</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="uk-margin-top">Legal</h4>
+                <ul class="uk-list uk-list-bullet">
+                    <li><a href="#">Condiciones de uso</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="uk-margin-top">Suscribirse</h4>
+                <form class="uk-grid uk-grid-collapse" >
+                    <div class="uk-width-expand">
+                        <input class="uk-input" type="email"
+                               placeholder="E-mail">
+                    </div>
+                    <div class="uk-width-auto">
+                        <button class="uk-button uk-button-primary"
+                                data-uk-icon="check">
+                        </button>
+                    </div>
+                </form>
+                <h4>Social</h4>
+                <a class="uk-icon-button  uk-margin-small-right"
+                   data-uk-icon="facebook"></a>
+                <a class="uk-icon-button  uk-margin-small-right"
+                   data-uk-icon="twitter"></a>
+                <a class="uk-icon-button"
+                   data-uk-icon="instagram"></a>
+            </div>
+        </div>
+    </div>
+    <div class="uk-section uk-section-xsmall"
+         style="background-color: rgba(0,0,0,0.15)">
+        <div class="uk-container">
+            <div class="uk-grid uk-child-width-1-2@s uk-text-center uk-text-left@s"
+                 data-uk-grid>
+                <div class="uk-text-small uk-text-muted">
+                    Copyright 2019 - Todos los derechos.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

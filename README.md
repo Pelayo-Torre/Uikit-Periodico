@@ -1,17 +1,17 @@
 # Uikit-Periodico
 
 Se trata de una aplicación web de un periódico digital en la que los usuarios pueden realizar las siguientes acciones:
-  -Leer las noticias del periódico.
-  -Comentar las noticias.
-  -Eliminar su comentario.
-  -Valorar las noticias.
-  -Compartir las noticias.
-  -Registrarse.
-  -Iniciar sesión.
-  -Gestionar sus propias noticias.
-  -Ver las noticias que le compartieron.
+1. Leer las noticias del periódico.
+2. Comentar las noticias.
+3. Eliminar un comentario.
+4. Valorar las noticias.
+5. Compartir las noticias.
+6. Registr rse. 
+7. Iniciar sesión.
+8. Gestionar sus propias noticias.
+9. Ver las noticias que le compartieron.
 
 La aplicación está realizada con:
-  -Node JS
-  -Uikit (Para la parte visual de la aplicación)
-  -Base de datos mongodb en la nube.
+1. Node JS
+2. Uikit (Para la parte visual de la aplicación)
+3. Base de datos mongodb en la nube.

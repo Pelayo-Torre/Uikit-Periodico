@@ -15,3 +15,5 @@ La aplicación está realizada con:
 1. Node JS
 2. Uikit (Para la parte visual de la aplicación)
 3. Base de datos mongodb en la nube.
+
+Aplicación desarrollada con Tania Díaz Álvarez
